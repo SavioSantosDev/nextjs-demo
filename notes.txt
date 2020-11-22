@@ -1,0 +1,91 @@
+Dependencias necessárias para inicializar um app next
+    next react react-dom
+
+Na raiz do diretório temos que ter uma pasta /pages
+    . Cada arquivo dentro dela corresponde a uma rota
+        - /pages/index.js            /
+        - /pages/posts/post1.js      /posta/post1
+    
+
+NAVEGAÇÃO ENTRE AS ROTAS
+    - importar link de next/link
+    - <Link href="/posts/first-post"><a>this page!</a>
+    - A tag <a> deve ser encapsulada dentro da tag <link href="">
+    - Links para páginas externas basta utilisar <a> sem o <link>
+    - Classes DEVEM ser aplicadas dentro da tag <a> E NÃO em <link>
+
+ASSETS
+    - Os assets de nossa aplicação estão na pasta /public na raiz do projeto
+    
+    Para metatags:
+    - Em vez de <head> usaremos <Head> Head from next/head. Um componente react dentro no next
+    - Com isso cada página terá o seu próprio titulo.
+
+    Estilos CSS
+    - Para estilos scopados no mesmo arquivos podemos fazer o seguinte:
+        <style jsx>{`
+            * {
+            box-sizing: border-box;
+            }
+        `}</style>
+    - Para importar arquivos css em components react
+        . Crie arquivos terminados com .module.css
+        . Importa-los no arquivo respectivo. layout.js no caso
+        - CSS modules criar classes unicas
+        - Utilizando CSS modules não precisamos nos preocupar com colisões de classe
+
+
+PRE RENDERIZAMENTO
+    - Beneficios para SEO
+    - O html é carregado sem javascript e dps os componentes react ganharão interetividade
+        - Nome disso é hidratação
+    
+    - Há duas maneiras de pre renderizar
+        - Static Generation - Gera o html em tempo de execução, e esse html é reusado em cada requisição
+        - Server-side Rendering - Gera o html em cada requisição
+
+    - Nós podemos escolher as maneiras de pre renderizar, podemos também fazer o app hibrido com as duas formas.
+    - É recomendada utilizar Static Generation sempre que possível.
+        - A página é construida uma vez e servida por CDN, o que torna mais rápido do que contruir a cada requisição.
+    
+    Alguns tipos de páginas para se utilizar Static Generation:
+        Marketing pages
+        Blog posts
+        E-commerce product listings
+        Help and documentation
+    - Se puder pre-renderizar a página antes da solicitação do user, ent utilize o método acima.
+
+    
+    Static Generation COM ou SEM dados
+        Quando exportamos por padrão um componentes nós também podemos exportar uma função assincrona: getStatiProps
+            - Ela roda em tempo de produção
+            - Dentro dela podemos procurar dados externos e envia-los para o componente
+        Basicamente estamos dizendo ao next.js:
+            "Hey, esta páginas tem algumas dependencias, quando pre-renderizar em tempo de produção
+            certifique-se de resolver isso primeiro.
+        OBS: em desenvolvimento getStatiProps roda em cada requisição solicitada.
+    
+
+Arquivos.md
+    - Cada post de nosso blog irá ter um arquivo markdown
+    - Cada um deles tem uma sessão de metadados com 'title' e 'date'
+    - Isso é chamado de YAML Front Matter, podem ser analizados com a biblioteca 'gray-matter'
+    - Para renderizar markdown:
+        npm install remark remark-html
+
+    FORMATAR DATAS:
+        npm install date-fns
+
+Rotas dinamicas
+    - Páginas que tenha [foo] são rotas dinamicas
+
+    Para gerarmos nossas páginas estaticas com rotas dinamicas:
+    1 - criar uma página /pages/posts/[id].js
+        . Elá precisa conter
+            1 - Um compoennte react para renderizar a página
+            2 - getStaticPaths, retorna uma array com os possiveis valores para [id]
+            3- getStaticProps, busca os dados necessários para o post com o id
+    
+
+
+
